@@ -24,8 +24,13 @@ Route::get('/', 'PostsController@index');
 Route::get('about', 'PagesController@about');
 Route::get('service', 'PagesController@service');
  
+// Route::get('posts/{post}', function (App\Post $post) {
+//   dd($post->toArray());
+// });
 
 Route::resource('posts','PostsController');
+
+Route::resource('posts','PostsController',['except' => ['show']]);
 
 Auth::routes();
 
@@ -36,3 +41,7 @@ Route::resource('categories','CategoryController',['except'=>['create']]);
 
 //Search result
 Route::get('/search','SearchController@index');
+
+
+//Image post with TinyMCE
+Route::post('/image/upload','ImageController@upload');

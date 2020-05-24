@@ -7,6 +7,8 @@ use \App\Post;
 use App\Category;
 use Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
+use Illuminate\Support\Arr; 
 
 class PostsController extends Controller
 {
@@ -74,6 +76,8 @@ class PostsController extends Controller
           
        $post = new Post;
        $post->title = request('title');
+       //$post->slug = str_slug($request->title);
+       $post->slug = Str::slug($request->title,'-');
        $post->body = request('body');
        $post->category_id = request('category_id');
        $post->user_id = Auth::id();
@@ -89,17 +93,31 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        $post = Post::findOrFail($id);
-        $post_cat_id = $post->category_id;
-        // dd($post_cat_id);
-        $same_category_posts = Post::where('category_id',$post_cat_id)->orderBy('id','asc')->get();
-        // $count_cat= $same_category_posts->count();
-        // dd($count_cat);
+    // public function show(\App\Post $post,$id)
+    // {   
+    //     $post = Post::findOrFail($id);
+    //     $post_cat_id = $post->category_id;
+    //     // dd($post_cat_id);
+    //     $same_category_posts = Post::where('category_id',$post_cat_id)->orderBy('id','asc')->get();
+    //     // $count_cat= $same_category_posts->count();
+    //     // dd($count_cat);
         
-        return view('posts.show ')->with('post', $post)->with('same_category_posts',$same_category_posts);
+    //     return view('posts.show ')->with('post', $post)->with('same_category_posts',$same_category_posts);
+    // }
+   
+    // This is better way to code
+    public function show(Post $post)
+    {   
+    // find($id)で取得した結果が$postに入っている。
+    // dd($post->toArray());
+    $post_cat_id = $post->category_id;
+    $same_category_posts = Post::where('category_id',$post_cat_id)->orderBy('id','asc')->get();
+     return view('posts.show ')->with('post', $post)->with('same_category_posts',$same_category_posts);
     }
+
+
+
+
 
     /**
      * Show the form for editing the specified resource.

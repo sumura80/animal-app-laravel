@@ -113951,47 +113951,58 @@ tinymce_tinymce__WEBPACK_IMPORTED_MODULE_0___default.a.init({
   plugins: ['paste', 'link', 'table', 'image'],
   toolbar: "image",
   images_upload_url: '/image/upload',
-  images_upload_base_path: '/image/upload',
-  images_upload_credentials: true,
   menu: {
     table: {
       title: 'Table',
       items: 'inserttable tableprops deletetable | cell row column'
-    },
-    //入力時に改行が<p>にならないように
-    force_br_newlines: true,
-    force_p_newlines: false,
-    forced_root_block: 'div' // 標準だとpタグ。''だと文字修正を入れるためのstyle="text-align:..."が入らなくなるのでdivタグにしておく
+    } //入力時に改行が<p>にならないように
+    // force_br_newlines : true,
+    // force_p_newlines : false,
+    // forced_root_block : 'div',　// 標準だとpタグ。''だと文字修正を入れるためのstyle="text-align:..."が入らなくなるのでdivタグにしておく
 
   },
-  //Image Upload with images_upload_handler
-  images_upload_handler: function images_upload_handler(blobInfo, success, failure) {
-    var xhr, formData;
-    xhr = new XMLHttpRequest();
-    xhr.withCredentials = false;
-    xhr.open('POST', 'postAcceptor.php');
+  //https://www.tiny.cloud/docs/demo/file-picker/ を参考
+  file_picker_types: 'image',
 
-    xhr.onload = function () {
-      var json;
+  /* and here's our custom image picker*/
+  file_picker_callback: function file_picker_callback(cb, value, meta) {
+    var input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+    /*
+      Note: In modern browsers input[type="file"] is functional without
+      even adding it to the DOM, but that might not be the case in some older
+      or quirky browsers like IE, so you might want to add it to the DOM
+      just in case, and visually hide it. And do not forget do remove it
+      once you do not need it anymore.
+    */
 
-      if (xhr.status != 200) {
-        failure('HTTP Error: ' + xhr.status);
-        return;
-      }
+    input.onchange = function () {
+      var file = this.files[0];
+      var reader = new FileReader();
 
-      json = JSON.parse(xhr.responseText);
+      reader.onload = function () {
+        /*
+          Note: Now we need to register the blob in TinyMCEs image blob
+          registry. In the next release this part hopefully won't be
+          necessary, as we are looking to handle it internally.
+        */
+        var id = 'blobid' + new Date().getTime();
+        var blobCache = tinymce_tinymce__WEBPACK_IMPORTED_MODULE_0___default.a.activeEditor.editorUpload.blobCache;
+        var base64 = reader.result.split(',')[1];
+        var blobInfo = blobCache.create(id, file, base64);
+        blobCache.add(blobInfo);
+        /* call the callback and populate the Title field with the file name */
 
-      if (!json || typeof json.location != 'string') {
-        failure('Invalid JSON: ' + xhr.responseText);
-        return;
-      }
+        cb(blobInfo.blobUri(), {
+          title: file.name
+        });
+      };
 
-      success(json.location);
+      reader.readAsDataURL(file);
     };
 
-    formData = new FormData();
-    formData.append('file', blobInfo.blob(), blobInfo.filename());
-    xhr.send(formData);
+    input.click();
   }
 }); //When you add plugins or menu, you need to run 'npm run dev' and it will be influenced.
 

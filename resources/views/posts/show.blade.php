@@ -32,7 +32,7 @@
     @foreach($same_category_posts as $each_post)
       <div class="list-group">
       {{-- <a href="{{$each_post->id}}" class="list-group-item list-group-item-action rounded-0 {{$post->id ==$each_post->id ? 'disabled': ''}}"　style="{{$post->id ==$each_post->id ? 'background-color:#F3FCFD;' : ''}}">{{$each_post->title}}</a> --}}
-      <a href="{{$each_post->id}}" class="list-group-item list-group-item-action rounded-0 {{$post->id ==$each_post->id ? 'disabled bg-light border-info': ''}}">{{$each_post->title}}</a>
+      <a href="{{$each_post->slug}}" class="list-group-item list-group-item-action rounded-0 {{$post->id ==$each_post->id ? 'disabled bg-light border-info': ''}}">{{$each_post->title}}</a>
       </div> 
     @endforeach
   </div><!-- End Left side box -->

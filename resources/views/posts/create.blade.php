@@ -5,7 +5,7 @@
 
   <h1 class="mt-4">Create Post</h1>
 
-  <form action="/posts"  method="POST" >
+  <form action="/posts"  method="POST">
     @csrf
 
     <div class="form-group">
@@ -39,6 +39,11 @@
     @endif 
       
     </div>
+
+
+
+
+    
 
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>

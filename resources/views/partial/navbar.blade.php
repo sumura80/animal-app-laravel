@@ -18,11 +18,11 @@
             </li>
             
             <li class="nav-item">
-              <a class="nav-link" href="/about">About</a>
+              <a class="nav-link" href="https://sumura80.github.io/muraoka-introduction/aboutme.html">About Me</a>
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
               <a class="nav-link" href="/service">Service</a>
-            </li>
+            </li> --}}
             <!-- ナビゲーションバー -->
             {{-- <li class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -62,7 +62,7 @@
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 {{-- カテゴリにリレーションされているPOST一覧取得 --}}
                 @foreach($category->posts as $post)
-                  <a class="dropdown-item" href="/posts/{{$post->id}}">{{$post->title}}</a>
+                  <a class="dropdown-item" href="/posts/{{$post->slug}}">{{$post->title}}</a>
                 @endforeach
                 {{-- <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#">その他</a> --}}

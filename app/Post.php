@@ -23,4 +23,11 @@ class Post extends Model
     protected $dates = [
         'modified_at'
     ];
+
+    public function getRouteKeyName(){
+        return 'slug';
+    }
+
+
+    
 }

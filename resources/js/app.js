@@ -45,47 +45,15 @@ tinymce.init({
   plugins: ['paste', 'link','table','image'],
   toolbar: "image",
   images_upload_url: '/image/upload',
-  images_upload_base_path: '/image/upload',
-  images_upload_credentials: true,
   menu: {
     table: {title: 'Table', items: 'inserttable tableprops deletetable | cell row column'},
     //入力時に改行が<p>にならないように
-    force_br_newlines : true,
-    force_p_newlines : false,
-    forced_root_block : 'div',　// 標準だとpタグ。''だと文字修正を入れるためのstyle="text-align:..."が入らなくなるのでdivタグにしておく
+    // force_br_newlines : true,
+    // force_p_newlines : false,
+    // forced_root_block : 'div',　// 標準だとpタグ。''だと文字修正を入れるためのstyle="text-align:..."が入らなくなるのでdivタグにしておく
     
   },
+  
 
-  //Image Upload with images_upload_handler
-  images_upload_handler: function (blobInfo, success, failure) {
-    var xhr, formData;
-
-    xhr = new XMLHttpRequest();
-    xhr.withCredentials = false;
-    xhr.open('POST', 'postAcceptor.php');
-
-    xhr.onload = function() {
-      var json;
-
-      if (xhr.status != 200) {
-        failure('HTTP Error: ' + xhr.status);
-        return;
-      }
-
-      json = JSON.parse(xhr.responseText);
-
-      if (!json || typeof json.location != 'string') {
-        failure('Invalid JSON: ' + xhr.responseText);
-        return;
-      }
-
-      success(json.location);
-    };
-
-    formData = new FormData();
-    formData.append('file', blobInfo.blob(), blobInfo.filename());
-
-    xhr.send(formData);
-  }
 });
 //When you add plugins or menu, you need to run 'npm run dev' and it will be influenced.
