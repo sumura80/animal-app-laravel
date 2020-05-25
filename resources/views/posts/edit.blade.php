@@ -5,7 +5,7 @@
 
   <h1 class="mt-4">Edit table</h1>
 
-  <form action="/posts/{{$post->id}}"  method="POST">
+  <form action="/posts/{{$post->id}}" method="POST" enctype='multipart/form-data'>
     @csrf
     @method('PUT')
     <div class="form-group">
