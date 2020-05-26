@@ -30,7 +30,7 @@ Route::get('service', 'PagesController@service');
 
 Route::resource('posts','PostsController');
 
-Route::resource('posts','PostsController',['except' => ['show']]);
+// Route::resource('posts','PostsController',['except' => ['show']]);
 
 Auth::routes();
 

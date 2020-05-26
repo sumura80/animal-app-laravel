@@ -165,6 +165,7 @@ class PostsController extends Controller
         $post = Post::findOrFail($id);
         $post->category_id = request('category_id');
         $post->title = request('title');
+        $post->slug = Str::slug($request->title,'-');
         $post->body = request('body');
         $post->modified_at = Carbon::now();
         $post->update();
@@ -173,7 +174,7 @@ class PostsController extends Controller
 
         // $post->update($validatedData);
 
-        return redirect('/posts/' .$post->id)->with('success','Post Updated');
+        return redirect('/posts/' .$post->slug)->with('success','Post Updated');
 
        
 
